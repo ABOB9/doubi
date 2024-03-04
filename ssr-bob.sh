@@ -1070,7 +1070,7 @@ Modify_multi_port_user(){
 		Save_iptables
 		echo -e "${Inof} 多端口用户修改完成 ${Green_font_prefix}[旧: ${modify_user_port}  ${password} , 新: ${ssr_port}  ${ssr_password}]${Font_color_suffix} "
 	else
-		echo -e "${Error} 请输入正确的端口 !" && exit 1
+		echo -e "${Error} please input port" && exit 1
 	fi
 }
 # 删除 多端口用户配置
@@ -1096,7 +1096,7 @@ Del_multi_port_user(){
 		sed -i "/${port}/d" ${config_user_file}
 		echo -e "${Info} 多端口用户删除完成 ${Green_font_prefix} ${del_user_port} ${Font_color_suffix} "
 	else
-		echo "${Error} 请输入正确的端口 !" && exit 1
+		echo "${Error} please input port" && exit 1
 	fi
 }
 # 手动修改 用户配置
@@ -1128,7 +1128,7 @@ Port_mode_switching(){
 			Save_iptables
 			Restart_SSR
 		else
-			echo && echo "	已取消..." && echo
+			echo && echo "	cancel..." && echo
 		fi
 	else
 		echo && echo -e "	当前模式: ${Green_font_prefix}多端口${Font_color_suffix}" && echo
@@ -1147,14 +1147,14 @@ Port_mode_switching(){
 			Add_iptables
 			Restart_SSR
 		else
-			echo && echo "	已取消..." && echo
+			echo && echo "	cancel..." && echo
 		fi
 	fi
 }
 Start_SSR(){
 	SSR_installation_status
 	check_pid
-	[[ ! -z ${PID} ]] && echo -e "${Error} ShadowsocksR 正在运行 !" && exit 1
+	[[ ! -z ${PID} ]] && echo -e "${Error} ShadowsocksR is running !" && exit 1
 	/etc/init.d/ssr start
 	check_pid
 	[[ ! -z ${PID} ]] && View_User
@@ -1162,7 +1162,7 @@ Start_SSR(){
 Stop_SSR(){
 	SSR_installation_status
 	check_pid
-	[[ -z ${PID} ]] && echo -e "${Error} ShadowsocksR 未运行 !" && exit 1
+	[[ -z ${PID} ]] && echo -e "${Error} ShadowsocksR not is running !" && exit 1
 	/etc/init.d/ssr stop
 }
 Restart_SSR(){
@@ -1175,7 +1175,7 @@ Restart_SSR(){
 }
 View_Log(){
 	SSR_installation_status
-	[[ ! -e ${ssr_log_file} ]] && echo -e "${Error} ShadowsocksR日志文件不存在 !" && exit 1
+	[[ ! -e ${ssr_log_file} ]] && echo -e "${Error} ShadowsocksR log file not exist !" && exit 1
 	echo && echo -e "${Tip} 按 ${Red_font_prefix}Ctrl+C${Font_color_suffix} 终止查看日志" && echo -e "如果需要查看完整日志内容，请用 ${Red_font_prefix}cat ${ssr_log_file}${Font_color_suffix} 命令。" && echo
 	tail -f ${ssr_log_file}
 }
@@ -1453,27 +1453,27 @@ check_sys
 echo -e "  ShadowsocksR 一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- Toyo | doub.io/ss-jc42 ----
 
-  ${Green_font_prefix}1.${Font_color_suffix} 安装 ShadowsocksR
-  ${Green_font_prefix}2.${Font_color_suffix} 更新 ShadowsocksR
-  ${Green_font_prefix}3.${Font_color_suffix} 卸载 ShadowsocksR
-  ${Green_font_prefix}4.${Font_color_suffix} 安装 libsodium(chacha20)
+  ${Green_font_prefix}1.${Font_color_suffix} install ShadowsocksR
+  ${Green_font_prefix}2.${Font_color_suffix} update ShadowsocksR
+  ${Green_font_prefix}3.${Font_color_suffix} uninstall ShadowsocksR
+  ${Green_font_prefix}4.${Font_color_suffix} install libsodium(chacha20)
 ————————————
-  ${Green_font_prefix}5.${Font_color_suffix} 查看 账号信息
-  ${Green_font_prefix}6.${Font_color_suffix} 显示 连接信息
-  ${Green_font_prefix}7.${Font_color_suffix} 设置 用户配置
+  ${Green_font_prefix}5.${Font_color_suffix} view account info
+  ${Green_font_prefix}6.${Font_color_suffix} 显示 connection info
+  ${Green_font_prefix}7.${Font_color_suffix} modify config
   ${Green_font_prefix}8.${Font_color_suffix} 手动 修改配置
   ${Green_font_prefix}9.${Font_color_suffix} 切换 端口模式
 ————————————
- ${Green_font_prefix}10.${Font_color_suffix} 启动 ShadowsocksR
- ${Green_font_prefix}11.${Font_color_suffix} 停止 ShadowsocksR
- ${Green_font_prefix}12.${Font_color_suffix} 重启 ShadowsocksR
- ${Green_font_prefix}13.${Font_color_suffix} 查看 ShadowsocksR 日志
+ ${Green_font_prefix}10.${Font_color_suffix} startup ShadowsocksR
+ ${Green_font_prefix}11.${Font_color_suffix} stop ShadowsocksR
+ ${Green_font_prefix}12.${Font_color_suffix} reboot ShadowsocksR
+ ${Green_font_prefix}13.${Font_color_suffix} view ShadowsocksR log
 ————————————
  ${Green_font_prefix}14.${Font_color_suffix} 其他功能
  ${Green_font_prefix}15.${Font_color_suffix} 升级脚本
  "
 menu_status
-echo && read -e -p "请输入数字 [1-15]：" num
+echo && read -e -p "please input number [1-15]：" num
 case "$num" in
 	1)
 	Install_SSR
