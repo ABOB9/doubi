@@ -363,7 +363,7 @@ Set_config_protocol(){
 	echo && echo ${Separator_1} && echo -e "	protocol : ${Green_font_prefix}${ssr_protocol}${Font_color_suffix}" && echo ${Separator_1} && echo
 	if [[ ${ssr_protocol} != "origin" ]]; then
 		if [[ ${ssr_protocol} == "auth_sha1_v4" ]]; then
-			read -e -p "是否设置 协议插件兼容原版(_compatible)？[Y/n]" ssr_protocol_yn
+			read -e -p "set protocol plugin to compatible raw version(_compatible)？[Y/n]" ssr_protocol_yn
 			[[ -z "${ssr_protocol_yn}" ]] && ssr_protocol_yn="y"
 			[[ $ssr_protocol_yn == [Yy] ]] && ssr_protocol=${ssr_protocol}"_compatible"
 			echo
@@ -398,7 +398,7 @@ Set_config_obfs(){
 	fi
 	echo && echo ${Separator_1} && echo -e "	hunxiao : ${Green_font_prefix}${ssr_obfs}${Font_color_suffix}" && echo ${Separator_1} && echo
 	if [[ ${ssr_obfs} != "plain" ]]; then
-			read -e -p "是否设置 混淆插件兼容原版(_compatible)？[Y/n]" ssr_obfs_yn
+			read -e -p "set hunxiao plugin to compatible raw version(_compatible)？[Y/n]" ssr_obfs_yn
 			[[ -z "${ssr_obfs_yn}" ]] && ssr_obfs_yn="y"
 			[[ $ssr_obfs_yn == [Yy] ]] && ssr_obfs=${ssr_obfs}"_compatible"
 			echo
@@ -407,14 +407,14 @@ Set_config_obfs(){
 Set_config_protocol_param(){
 	while true
 	do
-	echo -e "请输入要设置的ShadowsocksR账号 欲限制的设备数 (${Green_font_prefix} auth_* 系列协议 不兼容原版才有效 ${Font_color_suffix})"
+	echo -e "please input max amount of devices (${Green_font_prefix} auth_* 系列协议 不兼容原版才有效 ${Font_color_suffix})"
 	echo -e "${Tip} 设备数限制：每个端口同一时间能链接的客户端数量(多端口模式，每个端口都是独立计算)，建议最少 2个。"
-	read -e -p "(默认: 无限):" ssr_protocol_param
+	read -e -p "(default: not limit):" ssr_protocol_param
 	[[ -z "$ssr_protocol_param" ]] && ssr_protocol_param="" && echo && break
 	echo $((${ssr_protocol_param}+0)) &>/dev/null
 	if [[ $? == 0 ]]; then
 		if [[ ${ssr_protocol_param} -ge 1 ]] && [[ ${ssr_protocol_param} -le 9999 ]]; then
-			echo && echo ${Separator_1} && echo -e "	设备数限制 : ${Green_font_prefix}${ssr_protocol_param}${Font_color_suffix}" && echo ${Separator_1} && echo
+			echo && echo ${Separator_1} && echo -e "	amount of devices : ${Green_font_prefix}${ssr_protocol_param}${Font_color_suffix}" && echo ${Separator_1} && echo
 			break
 		else
 			echo -e "${Error} 请输入正确的数字(1-9999)"
@@ -427,14 +427,14 @@ Set_config_protocol_param(){
 Set_config_speed_limit_per_con(){
 	while true
 	do
-	echo -e "请输入要设置的每个端口 单线程 限速上限(单位：KB/S)"
+	echo -e "please input network speed (unit：KB/S)"
 	echo -e "${Tip} 单线程限速：每个端口 单线程的限速上限，多线程即无效。"
-	read -e -p "(默认: 无限):" ssr_speed_limit_per_con
+	read -e -p "(default:not limit):" ssr_speed_limit_per_con
 	[[ -z "$ssr_speed_limit_per_con" ]] && ssr_speed_limit_per_con=0 && echo && break
 	echo $((${ssr_speed_limit_per_con}+0)) &>/dev/null
 	if [[ $? == 0 ]]; then
 		if [[ ${ssr_speed_limit_per_con} -ge 1 ]] && [[ ${ssr_speed_limit_per_con} -le 131072 ]]; then
-			echo && echo ${Separator_1} && echo -e "	单线程限速 : ${Green_font_prefix}${ssr_speed_limit_per_con} KB/S${Font_color_suffix}" && echo ${Separator_1} && echo
+			echo && echo ${Separator_1} && echo -e "	network speed : ${Green_font_prefix}${ssr_speed_limit_per_con} KB/S${Font_color_suffix}" && echo ${Separator_1} && echo
 			break
 		else
 			echo -e "${Error} 请输入正确的数字(1-131072)"
@@ -448,14 +448,14 @@ Set_config_speed_limit_per_user(){
 	while true
 	do
 	echo
-	echo -e "请输入要设置的每个端口 总速度 限速上限(单位：KB/S)"
+	echo -e "please input network speed of per port 请输入要设置的每个端口 总速度 限速上限(单位：KB/S)"
 	echo -e "${Tip} 端口总限速：每个端口 总速度 限速上限，单个端口整体限速。"
-	read -e -p "(默认: 无限):" ssr_speed_limit_per_user
+	read -e -p "(default:not limit):" ssr_speed_limit_per_user
 	[[ -z "$ssr_speed_limit_per_user" ]] && ssr_speed_limit_per_user=0 && echo && break
 	echo $((${ssr_speed_limit_per_user}+0)) &>/dev/null
 	if [[ $? == 0 ]]; then
 		if [[ ${ssr_speed_limit_per_user} -ge 1 ]] && [[ ${ssr_speed_limit_per_user} -le 131072 ]]; then
-			echo && echo ${Separator_1} && echo -e "	端口总限速 : ${Green_font_prefix}${ssr_speed_limit_per_user} KB/S${Font_color_suffix}" && echo ${Separator_1} && echo
+			echo && echo ${Separator_1} && echo -e "	network speed of per port : ${Green_font_prefix}${ssr_speed_limit_per_user} KB/S${Font_color_suffix}" && echo ${Separator_1} && echo
 			break
 		else
 			echo -e "${Error} 请输入正确的数字(1-131072)"
@@ -475,7 +475,7 @@ Set_config_all(){
 	Set_config_speed_limit_per_con
 	Set_config_speed_limit_per_user
 }
-# 修改 配置信息
+# modify 配置信息
 Modify_config_port(){
 	sed -i 's/"server_port": '"$(echo ${port})"'/"server_port": '"$(echo ${ssr_port})"'/g' ${config_user_file}
 }
@@ -919,22 +919,22 @@ get_IP_address(){
 		done
 	fi
 }
-# 修改 用户配置
+# modify 用户配置
 Modify_Config(){
 	SSR_installation_status
 	if [[ -z "${now_mode}" ]]; then
 		echo && echo -e "当前模式: 单端口，你要做什么？
- ${Green_font_prefix}1.${Font_color_suffix} 修改 用户端口
- ${Green_font_prefix}2.${Font_color_suffix} 修改 用户密码
- ${Green_font_prefix}3.${Font_color_suffix} 修改 加密方式
- ${Green_font_prefix}4.${Font_color_suffix} 修改 协议插件
- ${Green_font_prefix}5.${Font_color_suffix} 修改 混淆插件
- ${Green_font_prefix}6.${Font_color_suffix} 修改 设备数限制
- ${Green_font_prefix}7.${Font_color_suffix} 修改 单线程限速
- ${Green_font_prefix}8.${Font_color_suffix} 修改 端口总限速
- ${Green_font_prefix}9.${Font_color_suffix} 修改 全部配置" && echo
-		read -e -p "(默认: 取消):" ssr_modify
-		[[ -z "${ssr_modify}" ]] && echo "已取消..." && exit 1
+ ${Green_font_prefix}1.${Font_color_suffix} modify port
+ ${Green_font_prefix}2.${Font_color_suffix} modify password
+ ${Green_font_prefix}3.${Font_color_suffix} modify method of encrypt
+ ${Green_font_prefix}4.${Font_color_suffix} modify protocol plugin
+ ${Green_font_prefix}5.${Font_color_suffix} modify hunxiao plugin
+ ${Green_font_prefix}6.${Font_color_suffix} modify limit device amount
+ ${Green_font_prefix}7.${Font_color_suffix} modify network speed of per thread
+ ${Green_font_prefix}8.${Font_color_suffix} modify network speed of per port
+ ${Green_font_prefix}9.${Font_color_suffix} modify all config" && echo
+		read -e -p "(default: cancel):" ssr_modify
+		[[ -z "${ssr_modify}" ]] && echo "canceled..." && exit 1
 		Get_User
 		if [[ ${ssr_modify} == "1" ]]; then
 			Set_config_port
@@ -973,17 +973,17 @@ Modify_Config(){
 		echo && echo -e "当前模式: 多端口，你要做什么？
  ${Green_font_prefix}1.${Font_color_suffix}  添加 用户配置
  ${Green_font_prefix}2.${Font_color_suffix}  删除 用户配置
- ${Green_font_prefix}3.${Font_color_suffix}  修改 用户配置
+ ${Green_font_prefix}3.${Font_color_suffix}  modify 用户配置
 ——————————
- ${Green_font_prefix}4.${Font_color_suffix}  修改 加密方式
- ${Green_font_prefix}5.${Font_color_suffix}  修改 协议插件
- ${Green_font_prefix}6.${Font_color_suffix}  修改 混淆插件
- ${Green_font_prefix}7.${Font_color_suffix}  修改 设备数限制
- ${Green_font_prefix}8.${Font_color_suffix}  修改 单线程限速
- ${Green_font_prefix}9.${Font_color_suffix}  修改 端口总限速
- ${Green_font_prefix}10.${Font_color_suffix} 修改 全部配置" && echo
-		read -e -p "(默认: 取消):" ssr_modify
-		[[ -z "${ssr_modify}" ]] && echo "已取消..." && exit 1
+ ${Green_font_prefix}4.${Font_color_suffix}  modify method of encrypt
+ ${Green_font_prefix}5.${Font_color_suffix}  modify protocol plugin
+ ${Green_font_prefix}6.${Font_color_suffix}  modify hunxiao plugin
+ ${Green_font_prefix}7.${Font_color_suffix}  modify limit device amount
+ ${Green_font_prefix}8.${Font_color_suffix}  modify limit network speed per thread
+ ${Green_font_prefix}9.${Font_color_suffix}  modify limit network speed per port
+ ${Green_font_prefix}10.${Font_color_suffix} modify all config" && echo
+		read -e -p "(default: cancel):" ssr_modify
+		[[ -z "${ssr_modify}" ]] && echo "canceled..." && exit 1
 		Get_User
 		if [[ ${ssr_modify} == "1" ]]; then
 			Add_multi_port_user
@@ -1052,12 +1052,12 @@ Add_multi_port_user(){
 	Save_iptables
 	echo -e "${Info} 多端口用户添加完成 ${Green_font_prefix}[端口: ${ssr_port} , 密码: ${ssr_password}]${Font_color_suffix} "
 }
-# 修改 多端口用户配置
+# modify 多端口用户配置
 Modify_multi_port_user(){
 	List_multi_port_user
-	echo && echo -e "请输入要修改的用户端口"
-	read -e -p "(默认: 取消):" modify_user_port
-	[[ -z "${modify_user_port}" ]] && echo -e "已取消..." && exit 1
+	echo && echo -e "请输入要modify port"
+	read -e -p "(default: cancel):" modify_user_port
+	[[ -z "${modify_user_port}" ]] && echo -e "canceled..." && exit 1
 	del_user=`cat ${config_user_file}|grep '"'"${modify_user_port}"'"'`
 	if [[ ! -z "${del_user}" ]]; then
 		port="${modify_user_port}"
@@ -1068,7 +1068,7 @@ Modify_multi_port_user(){
 		Del_iptables
 		Add_iptables
 		Save_iptables
-		echo -e "${Inof} 多端口用户修改完成 ${Green_font_prefix}[旧: ${modify_user_port}  ${password} , 新: ${ssr_port}  ${ssr_password}]${Font_color_suffix} "
+		echo -e "${Inof} 多端口用户modify finished ${Green_font_prefix}[old: ${modify_user_port}  ${password} , new: ${ssr_port}  ${ssr_password}]${Font_color_suffix} "
 	else
 		echo -e "${Error} please input port" && exit 1
 	fi
@@ -1099,7 +1099,7 @@ Del_multi_port_user(){
 		echo "${Error} please input port" && exit 1
 	fi
 }
-# 手动修改 用户配置
+# 手动modify 用户配置
 Manually_Modify_Config(){
 	SSR_installation_status
 	port=`${jq_file} '.server_port' ${config_user_file}`
@@ -1461,7 +1461,7 @@ echo -e "  ShadowsocksR 一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_
   ${Green_font_prefix}5.${Font_color_suffix} view account info
   ${Green_font_prefix}6.${Font_color_suffix} 显示 connection info
   ${Green_font_prefix}7.${Font_color_suffix} modify config
-  ${Green_font_prefix}8.${Font_color_suffix} 手动 修改配置
+  ${Green_font_prefix}8.${Font_color_suffix} 手动 modify配置
   ${Green_font_prefix}9.${Font_color_suffix} 切换 端口模式
 ————————————
  ${Green_font_prefix}10.${Font_color_suffix} startup ShadowsocksR
